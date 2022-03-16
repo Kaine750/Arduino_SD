@@ -36,7 +36,7 @@ void loop(char length, char width) {
     delay(60000);
 }
 
-void importing(char chank_imp, short int cur_x, short int cur_y, short int rel_x, short int rel_y){
+void importing(char chank_imp[4][11][11], short int cur_x, short int cur_y, short int rel_x, short int rel_y){
     File dataFile = SD.open("log.txt");
     if(dataFile){
         while(dataFile.available()){
@@ -61,7 +61,7 @@ void importing(char chank_imp, short int cur_x, short int cur_y, short int rel_x
 delay(2000);
 }
 
-void chank_11_4(char chank_map, short int cur_x, short int cur_y, short int rel_x, short int rel_y){
+void chank_upload(char chank_map[4][11][11], short int cur_x, short int cur_y, short int rel_x, short int rel_y){
     const short int x_limit = 100;
     const short int y_limit = 50;
     File dataFile = SD.open("log.txt");
@@ -99,7 +99,7 @@ void chank_11_4(char chank_map, short int cur_x, short int cur_y, short int rel_
 }
 
 #include <math.h>
-void r_theta_table(unsigned char r_theta_map, short int rel_x_1, short int rel_y_1){
+void r_theta_table(unsigned char r_theta_map[2][15][15], short int rel_x_1, short int rel_y_1){
     const float conv = 40.286; //(180 * 90 / M_PI / 128)
     rep(i, short int 15){
         rep(j, short int 15){
@@ -111,7 +111,7 @@ void r_theta_table(unsigned char r_theta_map, short int rel_x_1, short int rel_y
 }
 
 //PLANB
-void chank_11(char chank_map, short int cur_x, short int cur_y, short int rel_x, short int rel_y){
+void chank_11(char chank_map[22][22], short int cur_x, short int cur_y, short int rel_x, short int rel_y){
     const short int x_limit = 100;
     const short int y_limit = 50;
     File dataFile = SD.open("log.txt");
@@ -148,7 +148,7 @@ void chank_11(char chank_map, short int cur_x, short int cur_y, short int rel_x,
     delay(2000);
 }
 
-void map_12_5_5(char map_memory, short int X, short int Y){ //X,Yは12 map_memoryは12*5*5
+void SD_read_map(char map_memory[12][5][5], short int X[12], short int Y[12]){ //X,Yは12 map_memoryは12*5*5
     File dataFile = SD.open("log.txt");
     if(dataFile){
         while(dataFile.available()){
