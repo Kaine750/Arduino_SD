@@ -45,16 +45,16 @@ void importing(char chunk_imp[4][11][11], short int cur_x, short int cur_y, shor
         }
         rep(i, 11){                                                                                            //点・線対象に読み込み
             rep(j, 11){
-                dataFile[i + cur_x + rel_x][j + cur_y + rel_y].println(chank_imp[0][i][j]);}}
+                dataFile[i + cur_x + rel_x][j + cur_y + rel_y].println(chunk_imp[0][i][j]);}}
         for(short int i = 0;i > -11;i--){
             rep(j, 11){
-                dataFile[j + cur_x - rel_x][k + cur_y + rel_y].println(chank_imp[1][j][k]);}}
+                dataFile[j + cur_x - rel_x][k + cur_y + rel_y].println(chunk_imp[1][j][k]);}}
         for(short int i = 0;i > -11;i--){
             for(short int j = 0;j > -11;j--){        
-                dataFile[j + cur_x - rel_x][k + cur_y - rel_y].println(chank_imp[2][j][k]);}}
+                dataFile[j + cur_x - rel_x][k + cur_y - rel_y].println(chunk_imp[2][j][k]);}}
         rep(i, 11){
             for(short int j = 0;j > -11;j--){        
-                dataFile[j + cur_x + rel_x][k + cur_y - rel_y].println(chank_imp[3][j][k]);}}
+                dataFile[j + cur_x + rel_x][k + cur_y - rel_y].println(chunk_imp[3][j][k]);}}
     }
 }
         dataFile.close();
@@ -86,10 +86,10 @@ void chunk_upload(char chunk_map[4][11][11], short int cur_x, short int cur_y, s
                     chunk_map[3][j][k] = dataFile[j + cur_x + rel_x][k + cur_y - rel_y];}}
         }
         else{
-                chank_map[0][j][k] = 0;
-                chank_map[1][j][k] = 0;
-                chank_map[2][j][k] = 0;
-                chank_map[3][j][k] = 0;
+                chunk_map[0][j][k] = 0;
+                chunk_map[1][j][k] = 0;
+                chunk_map[2][j][k] = 0;
+                chunk_map[3][j][k] = 0;
         }
         }
         }
@@ -130,16 +130,16 @@ void chunk_11(char chunk_map[22][22], short int cur_x, short int cur_y, short in
             //        chunk_map[1][j][k] = dataFile[j + cur_x - rel_x][k + cur_y + rel_y];}}
             //for(short int i = 0;i > -11;i--){
             //    for(short int j = 0;j > -11;j--){
-            //        chank_map[2][j][k] = dataFile[j + cur_x - rel_x][k + cur_y - rel_y];}}
+            //        chunk_map[2][j][k] = dataFile[j + cur_x - rel_x][k + cur_y - rel_y];}}
             //rep(i, 11){
             //    for(short int j = 0;j > -11;j--){         
-            //        chank_map[3][j][k] = dataFile[j + cur_x + rel_x][k + cur_y - rel_y];}}
+            //        chunk_map[3][j][k] = dataFile[j + cur_x + rel_x][k + cur_y - rel_y];}}
         }
         else{
                 chunk_map[j][k] = 0;
-                //chank_map[1][j][k] = 0;
-                //chank_map[2][j][k] = 0;
-                //chank_map[3][j][k] = 0;
+                //chunk_map[1][j][k] = 0;
+                //chunk_map[2][j][k] = 0;
+                //chunk_map[3][j][k] = 0;
         }
         }
         }
