@@ -1,12 +1,13 @@
 #include <SD.h>
 #include <SPI.h>
 #include <Wire.h>
+#include <math.h>
 #define rep(i,n) for(int i = 0;i <(int)n;i++)
 
 
 const int CS = 4;
 
-void setup() {
+void setup(char length, char width) {
     Serial.begin(9600); //シリアル通信開始
     Serial.println("Initializing SD.....");//"Initializing SD....."と表示
     pinMode(10, OUTPUT);
@@ -16,9 +17,11 @@ void setup() {
     } else {
         Serial.println("SD OK");
     }
+    loop_map(char length, char width);
+    loop_table();
 }
 
-void loop(char length, char width) {
+void loop_map(char length, char width) { //SDカード内にマップ作成
     char datachar[length][width] = []; //char型の宣言
     rep(i,length){
         rep(j,width){
@@ -34,7 +37,45 @@ void loop(char length, char width) {
     } else {
         Serial.println("File write error!");
     }
-    delay(60000);
+    delay(10000);
+}
+
+void loop_table() {　//SDカード内にテーブル作成
+    char datachar[33][33][2] = []; //char型の宣言
+    //rep(i,33){
+      //  rep(j,33){
+        //    datachar[i][j] = r_theta_map[i][j];
+        //}
+    //}
+    File dataFile = SD.open("table.txt", FILE_WRITE); //"table.txt"にテーブルを入れる
+    
+    if (dataFile) {
+        Serial.println(datachar); //シリアルコンソールに値を表示
+        dataFile.println(datachar); //SDに文字列を書き込み
+        dataFile.close();
+    } else {
+        Serial.println("File write error!");
+    }
+    delay(10000);
+}
+
+void r_theta_set(){ //rとthetaの表.与えられた相対座標のものを計算
+    const float conv = 40.286; //(180 * 90 / M_PI / 128)
+    File dataFile = SD.open("table.txt");
+    if(dataFile){
+        while(dataFile.available()){
+            Serial.write(dataFile.read());
+        }
+    rep(i, short int 33){
+        rep(j, short int 33){
+                dataFile[i][j][0].println(sqrt((i + rel_x_1)(i + rel_x_1) + (j + rel_y_1)(j + rel_y_1)));
+                float radian = atan((j + rel_y_1)/(i + rel_x_1));
+                dataFile[i][j][1].println(radian * conv);
+        }
+    }
+    dataFile.close();
+    }
+    delay(2000);
 }
 
 void importing(char chunk_imp[4][11][11], short int cur_x, short int cur_y, short int rel_x, short int rel_y){ //SDカードに[4][11][11]のチャンクを読み込み
@@ -99,17 +140,17 @@ void exporting(char chunk_map[4][11][11], short int cur_x, short int cur_y, shor
     delay(2000);
 }
 
-#include <math.h>
-void r_theta_table(unsigned char r_theta_map[2][15][15], short int rel_x_1, short int rel_y_1){ //rとthetaの表.与えられた相対座標のものを計算
+void r_theta_table(unsigned char r_theta_map[11][11][2], short int rel_x_1, short int rel_y_1){ //rとthetaの表.与えられた相対座標のものを計算
     const float conv = 40.286; //(180 * 90 / M_PI / 128)
-    rep(i, short int 15){
-        rep(j, short int 15){
-                r_theta_map[0][i][j] = (i + rel_x_1)(i + rel_x_1) + (j + rel_y_1)(j + rel_y_1);
+    rep(i, short int 11){
+        rep(j, short int 11){
+                r_theta_map[i][j][0] = (i + rel_x_1)(i + rel_x_1) + (j + rel_y_1)(j + rel_y_1);
                 float radian = atan((j + rel_y_1)/(i + rel_x_1));
-                r_theta_map[1][i][j] = radian * conv;
+                r_theta_map[i][j][1] = radian * conv;
         }
     }
 }
+
 
 //PLANB
 void chunk_11(char chunk_map[22][22], short int cur_x, short int cur_y, short int rel_x, short int rel_y){ //[22][22]のチャンクをSDカードから書き込み
