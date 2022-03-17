@@ -19,6 +19,7 @@ void setup(char length, char width) {
     }
     loop_map(char length, char width);
     loop_table();
+    r_theta_set();
 }
 
 void loop_map(char length, char width) { //SDカード内にマップ作成
@@ -141,14 +142,20 @@ void exporting(char chunk_map[4][11][11], short int cur_x, short int cur_y, shor
 }
 
 void r_theta_table(unsigned char r_theta_map[11][11][2], short int rel_x_1, short int rel_y_1){ //rとthetaの表.与えられた相対座標のものを計算
-    const float conv = 40.286; //(180 * 90 / M_PI / 128)
-    rep(i, short int 11){
-        rep(j, short int 11){
-                r_theta_map[i][j][0] = (i + rel_x_1)(i + rel_x_1) + (j + rel_y_1)(j + rel_y_1);
-                float radian = atan((j + rel_y_1)/(i + rel_x_1));
-                r_theta_map[i][j][1] = radian * conv;
+    File dataFile = SD.open("log.txt");
+    if(dataFile){
+        while(dataFile.available()){
+            Serial.write(dataFile.read());
         }
+        rep(i,11){
+            rep(j,11){
+                r_theta_map[i][j][0] = dataFile[i + rel_x_1][j + rel_y_1][0];
+                r_theta_map[i][j][1] = dataFile[i + rel_x_1][j + rel_y_1][1];
+            }
+        }
+        dataFile.close();
     }
+    delay(2000);
 }
 
 
