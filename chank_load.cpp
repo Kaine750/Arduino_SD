@@ -62,7 +62,7 @@ void importing(char chunk_imp[4][11][11], short int cur_x, short int cur_y, shor
 delay(2000);
 }
 
-void chunk_upload(char chunk_map[4][11][11], short int cur_x, short int cur_y, short int rel_x, short int rel_y){ //[4][11][11]のチャンクにSDカードから書き込み
+void exporting(char chunk_map[4][11][11], short int cur_x, short int cur_y, short int rel_x, short int rel_y){ //[4][11][11]のチャンクにSDカードから書き込み
     const short int x_limit = 100;                                                                                //(cur_x,cur_y)は現在地,(rel_x,rel_y)は相対座標
     const short int y_limit = 50;                                                                                 //limit_x,limit_yを超えると0(未探索)を返す
     File dataFile = SD.open("log.txt");
