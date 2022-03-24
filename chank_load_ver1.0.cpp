@@ -74,13 +74,14 @@ void setup() {
 }
 
 
-void loop_map(char field_map[200][100], short int length, short int width) {
+void loop_map(char field_map[20][10], short int length, short int width) {
     File dataFile = SD.open("log.txt", FILE_WRITE);
     rep(i,length){
       rep(j,width){
-        dataFile.println(field_map[i][j]);
+        dataFile.print(field_map[i][j]);
         }
     }
+    dataFile.println("map loaded");
     delay(60000);
 }
 
@@ -92,25 +93,26 @@ void importing(char chunk_imp[4][11][11], short int cur_x, short int cur_y, shor
         }
         rep(i, 11){
             rep(j, 11){
-                dataFile[i + cur_x + rel_x][j + cur_y + rel_y].println(chunk_imp[0][i][j]);
+                dataFile.print(chunk_imp[0][i][j]);
                 }
                 }
         for(short int i = 0;i > -11;i--){
             rep(j, 11){
-                dataFile[j + cur_x - rel_x][k + cur_y + rel_y].println(chunk_imp[1][j][k]);
+                dataFile.print(chunk_imp[1][j][k]);
                 }
                 }
         for(short int i = 0;i > -11;i--){
             for(short int j = 0;j > -11;j--){        
-                dataFile[j + cur_x - rel_x][k + cur_y - rel_y].println(chunk_imp[2][j][k]);
+                dataFile.print(chunk_imp[2][j][k]);
                 }
                 }
         rep(i, 11){
             for(short int j = 0;j > -11;j--){        
-                dataFile[j + cur_x + rel_x][k + cur_y - rel_y].println(chunk_imp[3][j][k]);
+                dataFile.print(chunk_imp[3][j][k]);
                 }
                 }
     }
+    dataFile.println("imported");
 }
         dataFile.close();
 }
@@ -120,7 +122,7 @@ delay(2000);
 void exporting(char chunk_map[4][11][11], short int cur_x, short int cur_y, short int rel_x, short int rel_y){
     const short int x_limit = 100;
     const short int y_limit = 50;
-    File dataFile = SD.open("log.txt");
+    File dataFile = SD.open("log.txt", FILE_READ);
     if(dataFile){
         while(dataFile.available()){
             Serial.write(dataFile.read());
@@ -156,6 +158,11 @@ void exporting(char chunk_map[4][11][11], short int cur_x, short int cur_y, shor
 
 #include <math.h>
 void r_theta_table(unsigned char r_theta_map, short int rel_x_1, short int rel_y_1){
+    File tableFile = SD.open("table.txt", FILE_WRITE);
+    if(tableFile){
+        while(tableFile.available()){
+            Serial.write(tableFile.read());
+        }
     const float conv = 53.715; //(180 * 90 / M_PI / 96)
     rep(i, 15){
         rep(j, 15){
@@ -164,13 +171,25 @@ void r_theta_table(unsigned char r_theta_map, short int rel_x_1, short int rel_y
                 r_theta_map[1][i][j] = radian * conv;
         }
     }
+    rep(i, 2){
+        rep(j, 15){
+            rep(k, 15){
+                tableFile.print(r_theta_map[i][j][k]);               
+        }
+    }
+    }
+    tableFile.println("table loaded");    
+    }
+        dataFile.close();
+}
+delay(2000);
 }
 
 //PLANB
 void chank_11(char chunk_map, short int cur_x, short int cur_y, short int rel_x, short int rel_y){
     const short int x_limit = 100;
     const short int y_limit = 50;
-    File dataFile = SD.open("log.txt");
+    File dataFile = SD.open("log.txt", FILE_READ);
     if(dataFile){
         while(dataFile.available()){
             Serial.write(dataFile.read());
