@@ -4,6 +4,7 @@
 #define rep(i,n) for(int i = 0;i <(int)n;i++)
 
 File dataFile;
+File tableFile;
 
 const int CS = 4;
 
@@ -18,6 +19,7 @@ void setup() {
     else {
         Serial.println("SD OK");
         dataFile = SD.open("log.txt", FILE_WRITE);
+        tableFile = SD.open("table.txt", FILE_WRITE);
         
         if (dataFile) {
          Serial.print("Writing to log.txt..."); //シリアルコンソールに値を表示
@@ -26,10 +28,19 @@ void setup() {
          Serial.println("done");
         } 
         else {
-          Serial.println("File write error!");
+          Serial.println("dataFile write error!");
+    }
+        if (tableFile) {
+         Serial.print("Writing to table.txt..."); //シリアルコンソールに値を表示
+         tableFile.println("tetsing 1, 2, 3."); //SDに文字列を書き込み
+         tableFile.close();
+         Serial.println("done");
+        } 
+        else {
+          Serial.println("tableFile write error!");
     }
     }
-    dataFile = SD.open("log.txt");
+    dataFile = SD.open("log.txt", FILE_WRITE);
     if (dataFile) {
       Serial.println("log.txt:");
 
@@ -44,24 +55,31 @@ void setup() {
     // if the file didn't open, print an error:
     Serial.println("error opening log.txt");    
     }
+    
+    tableFile = SD.open("log.txt", FILE_WRITE);
+    if (tableFile) {
+      Serial.println("table.txt:");
+
+    // read from the file until there's nothing else in it:
+    while (tableFile.available()) {
+      Serial.write(tableFile.read());
+    }
+    // close the file:
+    tableFile.close();
+    } 
+    else {
+    // if the file didn't open, print an error:
+    Serial.println("error opening table.txt");    
+    }
 }
 
 
 void loop_map(char field_map[200][100], short int length, short int width) {
     File dataFile = SD.open("log.txt", FILE_WRITE);
-    char datachar[length][width] = {}; //char型の宣言
     rep(i,length){
-        rep(j,width){
-            datachar[i][j] = field_map[i][j];
+      rep(j,width){
+        dataFile.println(field_map[i][j]);
         }
-    }
-        
-    if (dataFile) {
-        Serial.println("datachar"); //シリアルコンソールに値を表示
-        dataFile.println("datachar"); //SDに文字列を書き込み
-        dataFile.close();
-    } else {
-        Serial.println("File write error!");
     }
     delay(60000);
 }
