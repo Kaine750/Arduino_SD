@@ -74,14 +74,20 @@ void setup() {
 
 void loop_map(char field_map[20][10], short int length, short int width) {
     File dataFile = SD.open("log.txt", FILE_WRITE);
+    if(dataFile){
+        while(dataFile.available()){
+            Serial.write(dataFile.read());
+        }
     rep(i,length){
       rep(j,width){
         dataFile.print(field_map[i][j]);
         }
         dataFile.println(""); //縦20*横10の型にする
     }
-    dataFile.println("map loaded");
-    delay(60000);
+    Serial.println("map loaded");
+    dataFile.close();
+    }
+    delay(10000);
 }
 
 void importing(char chunk_imp[4][11][11], short int cur_x, short int cur_y, short int rel_x, short int rel_y){
@@ -92,28 +98,29 @@ void importing(char chunk_imp[4][11][11], short int cur_x, short int cur_y, shor
         }
         rep(i, 11){
             rep(j, 11){
-                dataFile.print(chunk_imp[0][i][j]);
+                dataFile.print(chunk_imp[0][i][j]); //0-10行
                 }
+                dataFile.println("");
                 }
         for(short int i = 0;i > -11;i--){
             rep(j, 11){
-                dataFile.print(chunk_imp[1][j][k]);
+                dataFile.print(chunk_imp[1][i][j]);
                 }
+                dataFile.println(""); //11-21行
                 }
         for(short int i = 0;i > -11;i--){
             for(short int j = 0;j > -11;j--){        
-                dataFile.print(chunk_imp[2][j][k]);
+                dataFile.print(chunk_imp[2][i][j]);
                 }
+                dataFile.println(""); //22-32行
                 }
         rep(i, 11){
             for(short int j = 0;j > -11;j--){        
-                dataFile.print(chunk_imp[3][j][k]);
+                dataFile.print(chunk_imp[3][i][j]);
                 }
+                dataFile.println(""); //33-43行
                 }
-    }
-    dataFile.println("imported");
-}
-        dataFile.close();
+    dataFile.close();
 }
 delay(2000);
 }
@@ -124,7 +131,7 @@ void exporting(char chunk_map[4][11][11], short int cur_x, short int cur_y, shor
     File dataFile = SD.open("log.txt", FILE_READ);
     if(dataFile){
         while(dataFile.available()){
-            Data = Serial.write(dataFile.read());
+            Serial.write(dataFile.read());
         }
         //vector<vector<int> > chank_map(chank_num,vector<int>(chank_num,0));
         if(abs(11 + j + cur_x + rel_x) <= 100 && abs(11 + j + cur_y + rel_y) <= 50){  
