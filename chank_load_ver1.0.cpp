@@ -23,7 +23,6 @@ void setup() {
         
         if (dataFile) {
          Serial.print("Writing to log.txt..."); //シリアルコンソールに値を表示
-         dataFile.println("tetsing 1, 2, 3."); //SDに文字列を書き込み
          dataFile.close();
          Serial.println("done");
         } 
@@ -32,7 +31,6 @@ void setup() {
     }
         if (tableFile) {
          Serial.print("Writing to table.txt..."); //シリアルコンソールに値を表示
-         tableFile.println("tetsing 1, 2, 3."); //SDに文字列を書き込み
          tableFile.close();
          Serial.println("done");
         } 
@@ -80,6 +78,7 @@ void loop_map(char field_map[20][10], short int length, short int width) {
       rep(j,width){
         dataFile.print(field_map[i][j]);
         }
+        dataFile.println(""); //縦20*横10の型にする
     }
     dataFile.println("map loaded");
     delay(60000);
@@ -182,9 +181,10 @@ void r_theta_table(unsigned char r_theta_map, short int rel_x_1, short int rel_y
     rep(i, 2){
         rep(j, 15){
             rep(k, 15){
-                tableFile.print(r_theta_map[i][j][k]);               
+                tableFile.print(r_theta_map[i][j][k]);  //0-14行がr,15-29行がtheta             
+            }
+            tableFile.println("");
         }
-    }
     }
     tableFile.println("table loaded");    
     }
