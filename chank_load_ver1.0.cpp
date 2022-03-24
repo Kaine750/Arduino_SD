@@ -125,28 +125,28 @@ void exporting(char chunk_map[4][11][11], short int cur_x, short int cur_y, shor
     File dataFile = SD.open("log.txt", FILE_READ);
     if(dataFile){
         while(dataFile.available()){
-            Serial.write(dataFile.read());
+            Data = Serial.write(dataFile.read());
         }
         //vector<vector<int> > chank_map(chank_num,vector<int>(chank_num,0));
         if(abs(11 + j + cur_x + rel_x) <= 100 && abs(11 + j + cur_y + rel_y) <= 50){  
             rep(i, 11){
                 rep(j, 11){
-                    chunk_map[0][j][k] = dataFile[j + cur_x + rel_x][k + cur_y + rel_y];
+                    chunk_map[0][j][k] = Data[j + cur_x + rel_x][k + cur_y + rel_y];
                 }
             }
             for(short int i = 0;i > -11;i--){
                 rep(j, 11){
-                    chunk_map[1][j][k] = dataFile[j + cur_x - rel_x][k + cur_y + rel_y];
+                    chunk_map[1][j][k] = Data[j + cur_x - rel_x][k + cur_y + rel_y];
                 }
             }
             for(short int i = 0;i > -11;i--){
                 for(short int j = 0;j > -11;j--){
-                    chunk_map[2][j][k] = dataFile[j + cur_x - rel_x][k + cur_y - rel_y];
+                    chunk_map[2][j][k] = Data[j + cur_x - rel_x][k + cur_y - rel_y];
                 }
             }
             rep(i, 11){
                 for(short int j = 0;j > -11;j--){         
-                    chunk_map[3][j][k] = dataFile[j + cur_x + rel_x][k + cur_y - rel_y];
+                    chunk_map[3][j][k] = Data[j + cur_x + rel_x][k + cur_y - rel_y];
                 }
             }
         }
