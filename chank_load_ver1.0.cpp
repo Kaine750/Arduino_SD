@@ -18,8 +18,8 @@ void setup() {
     } 
     else {
         Serial.println("SD OK");
-        dataFile = SD.open("log.txt", FILE_WRITE);
-        tableFile = SD.open("table.txt", FILE_WRITE);
+        File dataFile = SD.open("log.txt", FILE_WRITE);
+        File tableFile = SD.open("table.txt", FILE_WRITE);
         
         if (dataFile) {
          Serial.print("Writing to log.txt..."); //シリアルコンソールに値を表示
@@ -38,7 +38,7 @@ void setup() {
           Serial.println("tableFile write error!");
     }
     }
-    dataFile = SD.open("log.txt", FILE_WRITE);
+    File dataFile = SD.open("log.txt", FILE_WRITE);
     if (dataFile) {
       Serial.println("log.txt:");
 
@@ -54,7 +54,7 @@ void setup() {
     Serial.println("error opening log.txt");    
     }
     
-    tableFile = SD.open("log.txt", FILE_WRITE);
+    File tableFile = SD.open("log.txt", FILE_WRITE);
     if (tableFile) {
       Serial.println("table.txt:");
 
@@ -70,7 +70,6 @@ void setup() {
     Serial.println("error opening table.txt");    
     }
 }
-
 
 void loop_map(char field_map[20][10], short int length, short int width) {
     File dataFile = SD.open("log.txt", FILE_WRITE);
@@ -124,6 +123,8 @@ void importing(char chunk_imp[4][11][11], short int cur_x, short int cur_y, shor
 }
 delay(2000);
 }
+
+//ここまでOK
 
 void exporting(char chunk_map[4][11][11], short int cur_x, short int cur_y, short int rel_x, short int rel_y){
     const short int x_limit = 100;
@@ -193,9 +194,8 @@ void r_theta_table(unsigned char r_theta_map, short int rel_x_1, short int rel_y
             tableFile.println("");
         }
     }
-    tableFile.println("table loaded");    
-    }
-        dataFile.close();
+    Serial.println("table loaded");    
+    dataFile.close();
 }
 delay(2000);
 }
