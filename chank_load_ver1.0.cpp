@@ -171,8 +171,8 @@ void exporting(char chunk_map[4][11][11], short int cur_x, short int cur_y, shor
     delay(2000);
 }
 
-#include <math.h>
-void r_theta_table(unsigned char r_theta_map, short int rel_x_1, short int rel_y_1){
+#include <math.h> //r_theta_tableもOK
+void r_theta_table(unsigned char r_theta_map[2][15][15], short int rel_x_1, short int rel_y_1){
     File tableFile = SD.open("table.txt", FILE_WRITE);
     if(tableFile){
         while(tableFile.available()){
@@ -181,7 +181,7 @@ void r_theta_table(unsigned char r_theta_map, short int rel_x_1, short int rel_y
     const float conv = 53.715; //(180 * 90 / M_PI / 96)
     rep(i, 15){
         rep(j, 15){
-                r_theta_map[0][i][j] = (i + rel_x_1)(i + rel_x_1) + (j + rel_y_1)(j + rel_y_1);
+                r_theta_map[0][i][j] = (i + rel_x_1)*(i + rel_x_1) + (j + rel_y_1)*(j + rel_y_1);
                 float radian = atan((j + rel_y_1)/(i + rel_x_1));
                 r_theta_map[1][i][j] = radian * conv;
         }
@@ -195,7 +195,7 @@ void r_theta_table(unsigned char r_theta_map, short int rel_x_1, short int rel_y
         }
     }
     Serial.println("table loaded");    
-    dataFile.close();
+    tableFile.close();
 }
 delay(2000);
 }
@@ -239,7 +239,7 @@ void chank_11(char chunk_map, short int cur_x, short int cur_y, short int rel_x,
 }
 
 void SD_read_map(char map_memory, short int X, short int Y){ //X,Yは12 map_memoryは12*5*5
-    File dataFile = SD.open("log.txt");
+    File dataFile = SD.open("log.txt", FILE_READ);
     if(dataFile){
         while(dataFile.available()){
             Serial.write(dataFile.read());
