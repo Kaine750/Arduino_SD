@@ -71,7 +71,7 @@ void setup() {
     }
 }
 
-void loop_map(char field_map[20][10], short int length, short int width) {
+void loop_map(char field_map[200][100], short int length, short int width) {
     File dataFile = SD.open("log.txt", FILE_WRITE);
     if(dataFile){
         while(dataFile.available()){
@@ -81,7 +81,7 @@ void loop_map(char field_map[20][10], short int length, short int width) {
       rep(j,width){
         dataFile.print(field_map[i][j]);
         }
-        dataFile.println(""); //縦20*横10の型にする
+        dataFile.println(""); //縦200*横100の型にする
     }
     Serial.println("map loaded");
     dataFile.close();
@@ -126,47 +126,58 @@ delay(2000);
 
 //ここまでOK
 
-void exporting(char chunk_map[4][11][11], short int cur_x, short int cur_y, short int rel_x, short int rel_y){
+void exporting(char chunk_map[4][11][11], short int cur_x, short int cur_y, short int rel_x, short int rel_y){     //x_limit,y_limitを超えると0を返す
     const short int x_limit = 100;
     const short int y_limit = 50;
     File dataFile = SD.open("log.txt", FILE_READ);
+    Data = {};
     if(dataFile){
         while(dataFile.available()){
             Serial.write(dataFile.read());
+            Data = dataFile.read();
         }
         //vector<vector<int> > chank_map(chank_num,vector<int>(chank_num,0));
-        if(abs(11 + j + cur_x + rel_x) <= 100 && abs(11 + j + cur_y + rel_y) <= 50){  
             rep(i, 11){
                 rep(j, 11){
-                    chunk_map[0][j][k] = Data[j + cur_x + rel_x][k + cur_y + rel_y];
+                    if(abs(i + cur_x + rel_x) <= 100 && abs(j + cur_y + rel_y) <= 50){  
+                    chunk_map[0][i][j] = Data[i + cur_x + rel_x][j + cur_y + rel_y];
+                    }
+                    else{
+                        chunk_map[0][i][j] = 0;
+                    }
                 }
             }
             for(short int i = 0;i > -11;i--){
                 rep(j, 11){
-                    chunk_map[1][j][k] = Data[j + cur_x - rel_x][k + cur_y + rel_y];
+                    if(abs(i + cur_x - rel_x) <= 100 && abs(j + cur_y + rel_y) <= 50){  
+                    chunk_map[1][i+10][j] = Data[i + cur_x - rel_x][j + cur_y + rel_y];
+                    }
+                    else{
+                        chunk_map[1][i+10][j] = 0;
+                    }
                 }
             }
             for(short int i = 0;i > -11;i--){
                 for(short int j = 0;j > -11;j--){
-                    chunk_map[2][j][k] = Data[j + cur_x - rel_x][k + cur_y - rel_y];
-                }
+                    if(abs(i + cur_x - rel_x) <= 100 && abs(j + cur_y - rel_y) <= 50){  
+                    chunk_map[2][i+10][j+10] = Data[i + cur_x - rel_x][j + cur_y - rel_y];
+                    }
+                    else{
+                        chunk_map[2][i+10][j+10] = 0;
+                    }
+                 }
             }
             rep(i, 11){
-                for(short int j = 0;j > -11;j--){         
-                    chunk_map[3][j][k] = Data[j + cur_x + rel_x][k + cur_y - rel_y];
+                for(short int j = 0;j > -11;j--){        
+                    if(abs(i + cur_x + rel_x) <= 100 && abs(j + cur_y - rel_y) <= 50){  
+                    chunk_map[3][i][j+10] = Data[i + cur_x + rel_x][j + cur_y - rel_y];
+                    }
+                    else{
+                        chunk_map[3][i][j+10] = 0;
                 }
             }
         }
-        else{
-                chunk_map[0][j][k] = 0;
-                chunk_map[1][j][k] = 0;
-                chunk_map[2][j][k] = 0;
-                chunk_map[3][j][k] = 0;
-        }
-        }
-        }
-        }
-        dataFile.close();
+    dataFile.close();
     }
     delay(2000);
 }
