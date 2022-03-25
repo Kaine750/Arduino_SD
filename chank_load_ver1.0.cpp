@@ -124,8 +124,6 @@ void importing(char chunk_imp[4][11][11], short int cur_x, short int cur_y, shor
 delay(2000);
 }
 
-//ここまでOK
-
 void exporting(char chunk_map[4][11][11], short int cur_x, short int cur_y, short int rel_x, short int rel_y){     //x_limit,y_limitを超えると0を返す
     const short int x_limit = 100;
     const short int y_limit = 50;
@@ -187,7 +185,7 @@ void exporting(char chunk_map[4][11][11], short int cur_x, short int cur_y, shor
     delay(2000);
 }
 
-#include <math.h> //r_theta_tableもOK
+#include <math.h> 
 void r_theta_table(unsigned char r_theta_map[2][15][15], short int rel_x_1, short int rel_y_1){
     File tableFile = SD.open("table.txt", FILE_WRITE);
     if(tableFile){
@@ -216,29 +214,40 @@ void r_theta_table(unsigned char r_theta_map[2][15][15], short int rel_x_1, shor
 delay(2000);
 }
 
+//↑ここまでOK
+
 //PLANB
-void chank_11(char chunk_map, short int cur_x, short int cur_y, short int rel_x, short int rel_y){
+/*void chank_11(char chunk_map, short int cur_x, short int cur_y, short int rel_x, short int rel_y){
     const short int x_limit = 100;
     const short int y_limit = 50;
+    char Data[200][100] = {};
     File dataFile = SD.open("log.txt", FILE_READ);
     if(dataFile){
         while(dataFile.available()){
-            Serial.write(dataFile.read());
+            rep(i,200){
+                rep(j,100){
+                    Serial.write(dataFile.read());
+                    char value = dataFile.read();
+                    Data[i][j] = value;
+            }
+          }
         }
         //vector<vector<int> > chank_map(chank_num,vector<int>(chank_num,0));
         if(abs(22 + j + cur_x + rel_x) <= 100 && abs(22 + j + cur_y + rel_y) <= 50){  
             rep(i, 22){
                 rep(j, 22){
-                    chunk_map[j][k] = dataFile[j + cur_x + rel_x][k + cur_y + rel_y];}}
+                    chunk_map[j][k] = Data[j + cur_x + rel_x][k + cur_y + rel_y];
+                }
+            }
             //for(short int i = 0;i > -11;i--){
             //    rep(j, 11){
-            //        chunk_map[1][j][k] = dataFile[j + cur_x - rel_x][k + cur_y + rel_y];}}
+            //        chunk_map[1][j][k] = Data[j + cur_x - rel_x][k + cur_y + rel_y];}}
             //for(short int i = 0;i > -11;i--){
             //    for(short int j = 0;j > -11;j--){
-            //        chunk_map[2][j][k] = dataFile[j + cur_x - rel_x][k + cur_y - rel_y];}}
+            //        chunk_map[2][j][k] = Data[j + cur_x - rel_x][k + cur_y - rel_y];}}
             //rep(i, 11){
             //    for(short int j = 0;j > -11;j--){         
-            //        chunk_map[3][j][k] = dataFile[j + cur_x + rel_x][k + cur_y - rel_y];}}
+            //        chunk_map[3][j][k] = Data[j + cur_x + rel_x][k + cur_y - rel_y];}}
         }
         else{
                 chunk_map[j][k] = 0;
@@ -252,18 +261,25 @@ void chank_11(char chunk_map, short int cur_x, short int cur_y, short int rel_x,
         dataFile.close();
     }
     delay(2000);
-}
+} */
 
 void SD_read_map(char map_memory, short int X, short int Y){ //X,Yは12 map_memoryは12*5*5
     File dataFile = SD.open("log.txt", FILE_READ);
+    char Data[200][100] = {};
     if(dataFile){
         while(dataFile.available()){
-            Serial.write(dataFile.read());
+            rep(i,200){
+                rep(j,100){
+                    Serial.write(dataFile.read());
+                    char value = dataFile.read();
+                    Data[i][j] = value;
+            }
+          }
         }
     rep(a, 12)
         rep(i, 5){
             rep(j, 5){
-                map_memory[a][i][j] = dataFile[X[a] + i][Y[a] + j];
+                map_memory[a][i][j] = Data[X[a] + i][Y[a] + j];
         }
     }
     dataFile.close();
