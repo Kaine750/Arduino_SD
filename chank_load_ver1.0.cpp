@@ -130,11 +130,16 @@ void exporting(char chunk_map[4][11][11], short int cur_x, short int cur_y, shor
     const short int x_limit = 100;
     const short int y_limit = 50;
     File dataFile = SD.open("log.txt", FILE_READ);
-    Data = {};
+    char Data[200][100] = {};
     if(dataFile){
         while(dataFile.available()){
+          rep(i,200){
+            rep(j,100){
             Serial.write(dataFile.read());
-            Data = dataFile.read();
+            char value = dataFile.read();
+            Data[i][j] = value;
+            }
+          }
         }
         //vector<vector<int> > chank_map(chank_num,vector<int>(chank_num,0));
             rep(i, 11){
