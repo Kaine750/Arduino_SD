@@ -286,8 +286,3 @@ void SD_read_map(char map_memory[12][5][5], short int X[5], short int Y[5]){ //X
     }
     delay(2000);
 }
-
-void loop() {
-  // put your main code here, to run repeatedly:
-
-}
