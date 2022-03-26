@@ -2,7 +2,6 @@
 #include <SPI.h>
 #include <Wire.h>
 #define rep(i,n) for(int i = 0;i <(int)n;i++)
-
 #define CS 4
 
 void setup_sd() {
