@@ -214,10 +214,10 @@ void r_theta_table(unsigned char r_theta_map[2][15][15], short int rel_x_1, shor
 delay(2000);
 }
 
-//↑ここまでOK
+
 
 //PLANB
-/*void chank_11(char chunk_map, short int cur_x, short int cur_y, short int rel_x, short int rel_y){
+/* void chank_11(char chunk_map, short int cur_x, short int cur_y, short int rel_x, short int rel_y){
     const short int x_limit = 100;
     const short int y_limit = 50;
     char Data[200][100] = {};
