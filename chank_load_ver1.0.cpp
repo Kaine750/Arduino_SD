@@ -3,9 +3,6 @@
 #include <Wire.h>
 #define rep(i,n) for(int i = 0;i <(int)n;i++)
 
-File dataFile;
-File tableFile;
-
 const int CS = 4;
 
 void setup() {
@@ -19,7 +16,6 @@ void setup() {
     else {
         Serial.println("SD OK");
         File dataFile = SD.open("log.txt", FILE_WRITE);
-        File tableFile = SD.open("table.txt", FILE_WRITE);
         
         if (dataFile) {
          Serial.print("Writing to log.txt..."); //シリアルコンソールに値を表示
@@ -28,14 +24,7 @@ void setup() {
         } 
         else {
           Serial.println("dataFile write error!");
-    }
-        if (tableFile) {
-         Serial.print("Writing to table.txt..."); //シリアルコンソールに値を表示
-         tableFile.close();
-         Serial.println("done");
-        } 
-        else {
-          Serial.println("tableFile write error!");
+          dataFile.close();
     }
     }
     File dataFile = SD.open("log.txt", FILE_WRITE);
@@ -52,22 +41,6 @@ void setup() {
     else {
     // if the file didn't open, print an error:
     Serial.println("error opening log.txt");    
-    }
-    
-    File tableFile = SD.open("log.txt", FILE_WRITE);
-    if (tableFile) {
-      Serial.println("table.txt:");
-
-    // read from the file until there's nothing else in it:
-    while (tableFile.available()) {
-      Serial.write(tableFile.read());
-    }
-    // close the file:
-    tableFile.close();
-    } 
-    else {
-    // if the file didn't open, print an error:
-    Serial.println("error opening table.txt");    
     }
 }
 
